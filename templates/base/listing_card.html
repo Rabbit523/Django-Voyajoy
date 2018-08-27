@@ -1,0 +1,27 @@
+{% load humanize %}
+<!-- first room -->
+<li class="rooms__item">
+    <div class="summary">
+        <div class="media">
+            <a href="{% url 'browse_room' listing.slug %}">
+                <img src="{{ listing.listing_photo_listing.all.0.photo.thumb }}" alt="{{ listing.headline | title}}" style="height:231px"/>
+            </a>
+        </div>
+        <div class="title">
+            <h4>
+                <a href="{% url 'browse_room' listing.slug %}">{{ listing.headline | title}}</a>
+            </h4>
+        </div>
+        <div class="price">
+            <span class="price-title">Price</span>
+            <span class="price-value">
+                 {% if listing.discounted_rate > 0 %}
+                     ${{ listing.get_price_after_discount|floatformat:2}}
+                 {% else %}
+                     ${{ listing.accomodation_fee|floatformat:2 }}
+                 {% endif %}
+            </span>
+            <span class="price-unit">Night</span>
+        </div>
+    </div>
+</li>

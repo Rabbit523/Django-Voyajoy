@@ -1,0 +1,136 @@
+{% load staticfiles %}
+
+<!-- Navigation Overlay menu start -->
+<div class="sh__navOverlay sh__navOverlay--closed">
+    <div class="sh__navOverlay-inner">
+        <div class="sh__navOverlay--menuWrapper">
+            <div class="sh__navOverlay--menuWrapper-inner">
+                <!--copyright text -->
+                <ul class="sh__navOverlay--mainNav ovr-menu">
+                    <li class="ovr-menu__item"><a href="{% url 'index_page' %}">Home</a></li>
+                    {% for region in region_query_set %}
+                        {% if region.has_properties %}
+                        <li class="ovr-menu__item"><a href="{% url 'browse_region' region.slug %}">{{ region.name }}</a>
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+
+                    <li class="ovr-menu__item"><a href="{% url 'careers' %}">Careers</a></li>
+                    <li class="ovr-menu__item"><a href="{% url 'tos' %}">Terms of service</a></li>
+                    <li class="ovr-menu__item"><a href="{% url 'policy' %}">Privacy Policy</a></li>
+                    <li class="ovr-menu__item"><a href="{% url 'about' %}">About us</a></li>
+
+                    {% if not user.is_authenticated %}
+                        <li class="ovr-menu__item"><a href="{% url 'account_signup' %}">Sign up</a></li>
+                        <li class="ovr-menu__item"><a href="{% url 'account_login' %}">Log in</a></li>
+
+                    {% else %}
+                        <li class="ovr-menu__item"><a href="{% url 'booking_list' %}">My Bookings</a></li>
+                        <li class="ovr-menu__item"><a href="{% url 'account_logout' %}">Log out</a></li>
+                    {% endif %}
+                </ul>
+
+                <!--start close buttom -->
+                <a href="#" class="button-navOverlay-close">
+                    <span></span>
+                    <svg x="0px" y="0px" width="54px" height="54px" viewBox="0 0 54 54">
+                        <circle fill="transparent" stroke="#656e79" stroke-width="1" cx="27" cy="27" r="25"
+                                stroke-dasharray="157 157" stroke-dashoffset="157"></circle>
+                    </svg>
+                </a><!--end-close button -->
+
+            </div><!--/.sh__navOverlay-menuWrapper-inner -->
+        </div><!--/.sh__navOverlay-menuWrapper -->
+        <!--copyright text -->
+        <div class="copyText-wrapper">
+            <div class="copyText">VOYAJOY ©2018
+            </div>
+        </div><!--end copyright text -->
+    </div><!--/.sh__navOverlay-inner -->
+
+
+
+</div> <!--/.sh__navOverlay -->
+<!-- Navigation Overlay end -->
+
+
+<header id="header" class="site-header header--sticky header--not-sticked site-header--absolute">
+    {% if user.is_authenticated %}
+        <div class="alert alert-success hide" id="confirmation">
+            <ul class="alert-message">
+                <li>Welcome {{ user.get_full_name }}!. Your email is successfully confirmed</li>
+            </ul>
+        </div>
+
+    {% endif %}
+    <div class="site-header-main-wrapper clearfix">
+        <div class="container siteheader-container">
+            <div class="flex-col flex-basis-auto">
+                <div class="flex-row site-header-row site-header-main">
+                    <!-- left column - logo -->
+                    <div class="flex-col flex flex-start-x flex-center-y flex-basis-auto flex-grow-0 site-header-col-left">
+                        <div id="logo-container">
+                            <div class="site-logo">
+                                <a href="/" class="site-logo-anch">
+                                    <img class="logo-img-sticky site-logo-img-sticky"
+                                         src="{% static 'images/Logo - Black bg.svg' %}" alt="Voyajoy"
+                                         title="Voyajoy">
+                                    <img class="logo-img site-logo-img" src="{% static 'images/Logo - White bg.svg' %}"
+                                         alt="Voyajoy" title="Voyajoy">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- center column -->
+                    <div class="flex-col flex flex-center-x flex-center-y flex-basis-auto flex-grow-0 site-header-col-center site-header-main-center">
+                    </div>
+                    <!-- right column - navigation menu -->
+                    <div class="flex-col flex flex-end-x flex-center-y flex-basis-auto site-header-col-right site-header-main-right">
+                        <div class="main-menu-wrapper">
+                            <a href="tel:(415) 347-8038" class="sh-component btn-fullwhite ">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                <span>{{ PHONE_NUMBER }}</span>
+                            </a>
+                            {% if  user.is_authenticated %}
+                                <a href="{% url 'booking_list' %}" class="sh-component btn-fullwhite ">
+                                    <span>My bookings</span>
+                                </a>
+                                <a href="{% url 'account_logout' %}" class="sh-component btn-fullwhite ">
+                                    <span>Log out</span>
+                                </a>
+
+                            {% else %}
+                                <a href="{% url 'account_login' %}" class="sh-component btn-fullwhite ">
+                                    <span>Log In</span>
+                                </a>
+
+                            {% endif %}
+
+                            <div class="sh-component menu-wrapper">
+                                <a href="#" class="sh__hamburger-trigger">
+                                    {% if  not user.is_authenticated %}
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    {% else %}
+
+
+                                        <img class="logo-img-sticky site-logo-img-login"
+                                             src="{% static 'images/medium-default-avatar.png' %}"
+                                             style="border-radius:50%"/>
+
+
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+

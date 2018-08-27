@@ -1,0 +1,45 @@
+<!--  SLIDER GALLERY -->
+<div class="hg-slider">
+    <div class="row">
+        <div class="hg-slider-gallery">
+            <div class="col-md-12 col-sm-12">
+
+                <!-- first gallery -->
+                <div class="hg-slider-jstrigger">
+
+                    {% for region in region_query_set %}
+                        {% if region.has_properties %}
+                            <!--picture-->
+                            <div class="hg-slider__item">
+                                <div class="hg-slider__wrapper">
+                                    <a href="{% url 'browse_region' region.slug %}"  class="hg-slider--image_link">
+                                        <span class="hg-slider-media-cover"></span>
+                                        <div>
+                                             <span class="instashow-gallery-media-info">
+                                                    <span class="instashow-gallery-media-info-description">{{ region.name }}
+                                                    </span>
+                                            </span>
+                                        </div>
+                                        <div class="hg-slider__img-container">
+                                            <img src="{{ region.image }}" alt="{{ region.name }}" style="width:158%;"/>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <!--end picture-->
+                        {% endif %}
+
+                    {% endfor %}
+
+
+
+
+
+                </div>
+            </div><!--end column-->
+
+
+        </div><!-- end column -->
+    </div>
+
+</div>

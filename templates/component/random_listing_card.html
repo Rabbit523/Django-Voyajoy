@@ -1,0 +1,47 @@
+{% load staticfiles %}
+{#<div class="col-md-4 col-sm-4 hg-prom-col">#}
+{#    <div class="hg-prom-content">#}
+{#        <div class="hg-prom-content--imgbox">#}
+{#            <div class="hg-prom-content__wrapper">#}
+{#                <a href="{% url 'browse_room' listing.slug %}" class="imglink">#}
+{#                    <img src="{{ listing.listing_photo_listing.all.0.photo.thumb }}" alt="" title="room" class="img-responsive image-boxes-img cover-fit-img">#}
+{#                </a>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="hg-prom-content--txt">#}
+{#            <div class="hg-title-block">#}
+{#                <h4 class="hg-title-block__title"><a href="{% url 'browse_room' listing.slug %}">{{ listing.headline| title|truncatewords:10}} </a></h4>#}
+{#                <h4 class="hg-title-block__subtitle">{% if listing.discounted_rate > 0 %}${{ listing.get_price_after_discount|floatformat:2}}{% else %}${{ listing.accomodation_fee|floatformat:2 }}{% endif %}</h4>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+
+
+<!-- first room -->
+<li class="rooms__item">
+    <div class="summary">
+        <div class="media">
+            <a href="{% url 'browse_room' listing.slug %}">
+                <img src="{{ listing.listing_photo_listing.all.0.photo.thumb }}" alt="{{ listing.headline | title}}" style="height:231px"/>
+            </a>
+        </div>
+        <div class="title">
+            <h4>
+                <a href="{% url 'browse_room' listing.slug %}">{{ listing.headline | title}}</a>
+            </h4>
+        </div>
+        <div class="price">
+            <span class="price-title">Price</span>
+            <span class="price-value">
+                 {% if listing.discounted_rate > 0 %}
+                     ${{ listing.get_price_after_discount|floatformat:2}}
+                 {% else %}
+                     ${{ listing.accomodation_fee|floatformat:2 }}
+                 {% endif %}
+            </span>
+            <span class="price-unit">Night</span>
+        </div>
+    </div>
+</li>

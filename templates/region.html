@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load staticfiles i18n %}
+{% block head_title %}Voyajoy | {{ region.name | title }}{% endblock %}
+{% block seo_title %}Voyajoy | {{ region.name | title }} Vacation Rental{% endblock %}
+
+{% block content %}
+
+    <!-- Room Title -->
+    <div class="page-subheader psub--light">
+        <div class="page-subheader-container">
+            <div class="title">
+                <h4>{{ region.name | title }}</h4>
+            </div>
+
+        </div>
+    </div>
+
+    {% include 'component/region_slider.html' %}
+
+
+    <ul class="rooms hg-catalog-4-column easypag">
+        {% for listing in region_listings %}
+            {% include 'base/listing_card.html' %}
+            {% empty %}
+            <h3>No listings found</h3>
+        {% endfor %}
+
+        <div class="center">
+            <div class="pagination center">
+
+                {% if region_listings.has_previous %}
+
+                    <a href="?page={{ region_listings.previous_page_number }}">❮ previous</a>
+
+                {% endif %}
+                <a>Page {{ region_listings.number }} of {{ region_listings.paginator.num_pages }}.</a>
+
+
+                {% if region_listings.has_next %}
+
+                    <a href="?page={{ region_listings.next_page_number }}">next ❯</a>
+
+                {% endif %}
+
+
+            </div>
+        </div>
+
+
+    </ul>
+
+
+{% endblock %}

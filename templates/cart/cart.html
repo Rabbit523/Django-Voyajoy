@@ -1,0 +1,304 @@
+{% extends 'base/base.html' %}
+{% load staticfiles i18n %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/braintree.css' %}" type="text/css">
+{% endblock %}
+{% block head_title %}Voyajoy | Cart{% endblock %}
+{% block seo_title %}Voyajoy | Cart{% endblock %}
+{% block content %}
+
+    <div class="page-subheader psub--light">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'index_page' %}">Home</a></li>
+                <li>Complete Checkout </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="container mgt-60">
+        <div class="row">
+            <!--left side-->
+            <div class="col-sm-12 col-md-12  ">
+                <h3 class="hg-check">Book {{ reservation.listing.headline }}  {{ request.COOKIES.confirmed_sent }}</h3>
+                <table class="hg-booking">
+                    <tbody>
+                    <tr>
+                        <th>Room </th>
+                        <th class="hg-booking__checkin">Check in</th>
+                        <th class="hg-booking__checkout">Check - out</th>
+                        <th class="hg-booking__night">Adults</th>
+                        <th class="hg-booking__night">Childs</th>
+                    </tr>
+                    <tr>
+                        <td>{{ reservation.listing.headline }}</td>
+                        <td class="hg-booking__checkin">{{ reservation.arrival_date|date:"SHORT_DATE_FORMAT" }}</td>
+                        <td class="hg-booking__checkin">{{ reservation.departure_date|date:"SHORT_DATE_FORMAT" }}</td>
+                        <td class="hg-booking__checkin">{{ reservation.no_of_adults }}</td>
+                        <td class="hg-booking__checkin">{{ reservation.no_of_childs }}</td>
+                    </tr>
+                    <tr class="hg_subtotal">
+                        <td colspan="7">Renter Fee
+                        <span class="hg_subtotal__value">${{ reservation.owner_fees|floatformat:2}}</span>
+                        </td>
+                    </tr>
+
+                    {% for fees in reservation.reservation_fees.all %}
+                    <tr class="hg_subtotal">
+                        <td colspan="7">{{ fees.fees_name|title }}
+                            <span class="hg_subtotal__value">${{ fees.fees_amount|floatformat:2 }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr class="hg_grand_total">
+                        <td colspan="7">Discount
+                            <span class="hg_grand_total__value">${{ reservation.total_discount|floatformat:2 }}</span>
+                        </td>
+                    </tr>
+
+                    <tr class="hg_grand_total">
+                        <td colspan="7">Tax ({{ reservation.tax_rate }} %)
+                            <span class="hg_grand_total__value">${{ reservation.taxes|floatformat:2 }}</span>
+                        </td>
+                    </tr>
+                    <tr class="hg_adv-pay">
+                        <td colspan="7">Total
+                            <span class="hg_adv-pay__value">${{ reservation.total|floatformat:2 }}</span>
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+                <!--Customer details-->
+                <h3 class="hg-check">Customer details</h3>
+                <!-- Bootstrap inspired Braintree Hosted Fields example -->
+                <div class="panel panel-default bootstrap-basic">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Enter Card Details</h3>
+                    </div>
+
+                    <div class="alert alert-danger hide custom-error">
+                        <ul class="alert-message">
+                            <li></li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-success hide success">
+                        <ul class="alert-message">
+                            <li></li>
+                        </ul>
+                    </div>
+
+                    <form class="panel-body" id="cardForm">
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            <div class="form-group col-sm-8">
+                                <label class="control-label">Card Number</label>
+                                <!--  Hosted Fields div container -->
+                                <div class="form-control" id="card-number"></div>
+                                <span class="helper-text"></span>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <div class="row">
+                                    <label class="control-label col-xs-12">Expiration Date</label>
+                                    <div class="col-xs-6">
+                                        <!--  Hosted Fields div container -->
+                                        <div class="form-control" id="expiration-month"></div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <!--  Hosted Fields div container -->
+                                        <div class="form-control" id="expiration-year"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">Security Code</label>
+                                <!--  Hosted Fields div container -->
+                                <div class="form-control" id="cvv"></div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">Zipcode</label>
+                                <!--  Hosted Fields div container -->
+                                <div class="form-control" id="postal-code"></div>
+                            </div>
+                        </div>
+
+
+                        <button value="submit" id="submit" class="btn btn-success btn-lg center-block">Pay with <span id="card-type">Card</span></button>
+                    </form>
+
+
+
+                </div>
+
+
+        </div><!--end row  -->
+    </div>
+
+
+
+
+{% endblock %}
+{% block extra_js %}
+    <script src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.31.0/js/hosted-fields.min.js"></script>
+    <script src="{% static 'app_js/booking.js' %}"></script>
+    <script type="application/javascript" src="{% static 'app_js/jquery.cookie.js' %}"></script>
+    <script type="application/javascript" src="{% static 'app_js/storage.js' %}"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            var oldCsrf = getUrlParameter('csrfmiddlewaretoken');
+            var verified = $.cookie('confirmed_sent');
+            if (verified ==1 ){
+
+                $('#confirmation').removeClass('hide');
+                $.removeCookie('confirmed_sent', { path: '/' });
+
+            }
+
+        });
+
+
+        braintree.client.create({
+            authorization: '{{ request.session.braintree_client_token }}'
+        }, function (err, clientInstance) {
+            if (err) {
+                console.error(err);
+                $('.custom-error').removeClass('hide');
+                $('.custom-error li').html('Error: '+err.message);
+                return;
+            }
+
+            braintree.hostedFields.create({
+                client: clientInstance,
+                styles: {
+                    'input': {
+                        'font-size': '14px',
+                        'font-family': 'helvetica, tahoma, calibri, sans-serif',
+                        'color': '#3a3a3a'
+                    },
+                    ':focus': {
+                        'color': 'black'
+                    }
+                },
+                fields: {
+                    number: {
+                        selector: '#card-number',
+{#                        placeholder: '4111 1111 1111 1111'#}
+                    },
+                    cvv: {
+                        selector: '#cvv',
+{#                        placeholder: '123'#}
+                    },
+                    expirationMonth: {
+                        selector: '#expiration-month',
+                        placeholder: 'MM'
+                    },
+                    expirationYear: {
+                        selector: '#expiration-year',
+                        placeholder: 'YY'
+                    },
+                    postalCode: {
+                        selector: '#postal-code',
+{#                        placeholder: '90210'#}
+                    }
+                }
+            }, function (err, hostedFieldsInstance) {
+                if (err) {
+                    console.error(err);
+                    $('.custom-error').removeClass('hide');
+                    $('.custom-error li').html('Error: '+err.message);
+                    return;
+                }
+
+                hostedFieldsInstance.on('validityChange', function (event) {
+                    var field = event.fields[event.emittedBy];
+
+                    if (field.isValid) {
+                        if (event.emittedBy === 'expirationMonth' || event.emittedBy === 'expirationYear') {
+                            if (!event.fields.expirationMonth.isValid || !event.fields.expirationYear.isValid) {
+                                return;
+                            }
+                        } else if (event.emittedBy === 'number') {
+                            $('#card-number').next('span').text('');
+                        }
+
+                        // Remove any previously applied error or warning classes
+                        $(field.container).parents('.form-group').removeClass('has-warning');
+                        $(field.container).parents('.form-group').removeClass('has-success');
+                        // Apply styling for a valid field
+                        $(field.container).parents('.form-group').addClass('has-success');
+                    } else if (field.isPotentiallyValid) {
+                        // Remove styling  from potentially valid fields
+                        $(field.container).parents('.form-group').removeClass('has-warning');
+                        $(field.container).parents('.form-group').removeClass('has-success');
+                        if (event.emittedBy === 'number') {
+                            $('#card-number').next('span').text('');
+                        }
+                    } else {
+                        // Add styling to invalid fields
+                        $(field.container).parents('.form-group').addClass('has-warning');
+                        // Add helper text for an invalid card number
+                        if (event.emittedBy === 'number') {
+                            $('#card-number').next('span').text('Looks like this card number has an error.');
+                        }
+                    }
+                });
+
+                hostedFieldsInstance.on('cardTypeChange', function (event) {
+                    // Handle a field's change, such as a change in validity or credit card type
+                    if (event.cards.length === 1) {
+                        $('#card-type').text(event.cards[0].niceType);
+                    } else {
+                        $('#card-type').text('Card');
+                    }
+                });
+
+                $('.panel-body').submit(function (event) {
+                    event.preventDefault();
+
+                    $.blockUI({ message:'Please wait while processing your payment',
+                        css: {
+                            border: 'none',
+                            padding: '15px',
+                            backgroundColor: '#000',
+                            '-webkit-border-radius': '10px',
+                            '-moz-border-radius': '10px',
+                            opacity: .5,
+                            color: '#fff'
+                        } });
+
+
+                    hostedFieldsInstance.tokenize(function (err, payload) {
+                        if (err) {
+                            $('.custom-error').removeClass('hide');
+                            $('.custom-error li').html('Error: '+err.message);
+                            console.error(err.message);
+                            $.unblockUI();
+                            return;
+                        }
+
+                        send_payment(payload,{{ reservation.pk }},document.getElementsByName('csrfmiddlewaretoken')[0].value);
+
+
+
+                        // This is where you would submit payload.nonce to your server
+{#                        alert('Submit your nonce to your server here!');#}
+                    });
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

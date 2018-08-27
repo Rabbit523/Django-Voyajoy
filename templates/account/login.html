@@ -1,0 +1,113 @@
+{% extends "base/base.html" %}
+
+
+{% load i18n %}
+{% load account  staticfiles %}
+
+{% block head_title %}Voyajoy | {% trans "Sign In" %}{% endblock %}
+{% block seo_title %}Voyajoy | {% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+    <section class="hg-contact"><!-- start services section -->
+
+
+        <div class="container">
+            <div class="hg-title-block txt-center">
+                <h3 class="hg-title-block__title">SIGN IN TO VOYAJOY</h3>
+            </div>
+            <div class="row">
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <ul class="alert-message">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+
+                {% endif %}
+
+                <div class="col-md-12 col-sm-12 ">
+                    <form class="login" id="login-form" method="post" action="{% url 'account_login' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+
+                            {% else %}
+                            <input type="hidden" id="next"/>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.login }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.password }}
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.remember }} {{ form.remember.label }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="hg-form-component sign-in">
+                                    <button class="hb_btn btn-gradient " type="submit">{% trans "Sign In" %}</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <p style="text-align: center;"><a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a></p>
+                        {% if redirect_field_value %}
+                        <p style="text-align: center; margin-top: 0;">Don't have an account? <a href="{{ signup_url }}?{{ redirect_field_name }}={{ redirect_field_value }}">Sign Up</a></p>
+                        {% else %}
+                            <p style="text-align: center; margin-top: 0;">Don't have an account? <a href="{{ signup_url }}">Sign Up</a></p>
+                    {% endif %}
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+    {#    <script type="application/javascript" src="{% static 'app_js/storage.js' %}"></script>#}
+
+    <script>
+        $(function () {
+            {% if redirect_field_value and 'checkout' in redirect_field_value %}
+
+                $.cookie('{{ redirect_field_name }}',decodeURI('{{ redirect_field_value|safe }}'), { path: '/' });
+{#                $.cookie('send_email_checkout', true, { path: '/checkout' });#}
+
+
+
+            {% endif %}
+{#            $.cookie('send_email', true, { path: '/' });#}
+
+
+        });
+
+    </script>
+
+{% endblock %}

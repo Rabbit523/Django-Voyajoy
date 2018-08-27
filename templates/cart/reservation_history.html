@@ -1,0 +1,159 @@
+{% extends 'base/base.html' %}
+{% load staticfiles i18n %}
+{% block extra_css %}
+    <link>
+    <link href="{% static 'style/semantic.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/dataTables.semanticui.min.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block head_title %}Voyajoy | Reservation History{% endblock %}
+{% block seo_title %}Voyajoy | Reservation History{% endblock %}
+{% block content %}
+
+    <!-- Room Title -->
+    <div class="page-subheader psub--light">
+        <div class="page-subheader-container">
+            <div class="title">
+                <h4>Booking Requests</h4>
+            </div>
+
+        </div>
+    </div>
+
+    <section class="bg-color--grey">
+        <!--slider section  -->
+        <div class="hg-room-container">
+            <div class="room-containter-image">
+                <div class="hg-room-gallery">
+                    <div class="cont-img"><img src="{% static 'images/slider_14.jpg' %}" alt="room-image"></div>
+                </div>
+            </div>
+
+
+            <!-- <div class="row"> -->
+                <!--left side-->
+
+                <!-- <div class="col-sm-12 col-md-12 "> -->
+                    <!-- <table class=" ui celled table" id="trxtbl" cellspacing="0" width="100%"> -->
+                        <!-- <thead>
+
+                            <tr>
+                                <th>Ref#</th>
+                                <th>Room type</th>
+                                <th>Reservation Date</th>
+                                <th class="hg-booking__checkin">Check in</th>
+                                <th class="hg-booking__checkout">Check - out</th>
+                                <th class="hg-booking__checkout">Adults</th>
+                                <th class="hg-booking__checkout">Childs</th>
+                                <th class="hg-booking__checkout">Owner status</th>
+                                <th class="hg-booking__checkout">Total</th>
+
+                            </tr>
+                        </thead> -->
+                        <!-- <tbody> -->
+                        <!-- {% for reservation in reservation_list %} -->
+                            <!-- {% if reservation.has_bill %} -->
+                            <!-- <tr>
+                                <td>{{ reservation.id }}</td>
+                                <td><a href="{% url 'browse_room' reservation.listing.slug %}">{{ reservation.listing.headline }}</a></td>
+                                <td>{{ reservation.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+                                <td>{{ reservation.arrival_date|date:"c" }}</td>
+                                <td>{{ reservation.departure_date|date:"c" }}</td>
+                                <td>{{ reservation.no_of_adults }}</td>
+                                <td>{{ reservation.no_of_childs }}</td>
+                                <td>
+
+                                        {{ reservation.get_reservation_status|safe }}
+
+                                </td>
+                                <td>{{ reservation.total|floatformat:2 }}$</td>
+
+
+                            </tr> -->
+                            <!-- {% endif %} -->
+                        <!-- {% endfor %} -->
+
+
+                        <!-- </tbody> -->
+                    <!-- </table> -->
+
+                <!-- </div> -->
+
+
+            <!-- </div> -->
+
+        </div>
+
+
+    </section>
+
+    <section class="bg-color--white">
+        <div class="row">
+            <!--left side-->
+
+            <div class="col-sm-12 col-md-12 ">
+                <table class=" ui celled table" id="trxtbl" cellspacing="0" width="100%">
+                    <thead>
+
+                        <tr>
+                            <th class="hg_ref">Ref#</th>
+                            <th class="hg_room">Room type</th>
+                            <th class="hg_reservation">Reservation Date</th>
+                            <th class="hg-booking__checkin hg_checkin">Check in</th>
+                            <th class="hg-booking__checkout hg_checkout">Check - out</th>
+                            <th class="hg-booking__checkout hg_adults">Adults</th>
+                            <th class="hg-booking__checkout hg_childs">Childs</th>
+                            <th class="hg-booking__checkout hg_owner">Owner status</th>
+                            <th class="hg-booking__checkout hg_total">Total</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for reservation in reservation_list %}
+                        {% if reservation.has_bill %}
+                        <tr>
+                            <td class="hg_ref">{{ reservation.id }}</td>
+                            <td class="hg_room"><a href="{% url 'browse_room' reservation.listing.slug %}">{{ reservation.listing.headline }}</a></td>
+                            <td class="hg_reservation">{{ reservation.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+                            <td class="hg-booking__checkin hg_checkin">{{ reservation.arrival_date|date:"c" }}</td>
+                            <td class="hg-booking__checkout hg_checkout">{{ reservation.departure_date|date:"c" }}</td>
+                            <td class="hg-booking__checkout hg_adults">{{ reservation.no_of_adults }}</td>
+                            <td class="hg-booking__checkout hg_childs">{{ reservation.no_of_childs }}</td>
+                            <td class="hg-booking__checkout hg_owner">
+
+                                    {{ reservation.get_reservation_status|safe }}
+
+                            </td>
+                            <td class="hg-booking__checkout hg_total">{{ reservation.total|floatformat:2 }}$</td>
+
+
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block extra_js %}
+
+    <script src="{% static 'js/jquery-1.12.4.js'%}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.semanticui.min.js' %}"></script>
+    <script src="{% static 'js/semantic.min.js' %}"></script>
+    <script>
+
+{#        $(document).ready(function() {#}
+{#            $('#trxtbl').DataTable();#}
+{#        } );#}
+    </script>
+
+{% endblock %}

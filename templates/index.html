@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% load staticfiles i18n %}
+
+
+{% block content %}
+
+    {% include 'base/sliders.html' %}
+    {% include 'base/features.html' %}
+    {% include 'base/promotion.html' %}
+    {% include 'base/reviews.html' %}
+    {#    {% include 'base/service.html' %}#}
+    {#    {% include 'base/map.html' %}#}
+    {% include 'base/gallery.html' %}
+
+{% endblock %}
+
+{% block extra_js %}
+
+
+    <script>
+        $(function () {
+
+            var action = $.cookie('next');
+            if (action) {
+
+                $.blockUI({
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+
+                setTimeout($.unblockUI, 5000);
+
+                {#                    removeStorage('next');#}
+                $.removeCookie('next');
+                window.location.href = action.slice(1, -1);
+            } else {
+                if ($.cookie('confirmed_sent')) {
+                    $('#confirmation').removeClass('hide');
+                    $.removeCookie('confirmed_sent');
+
+                }
+            }
+
+
+        });
+
+    </script>
+
+
+{% endblock %}

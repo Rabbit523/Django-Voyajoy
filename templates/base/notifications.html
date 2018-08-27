@@ -1,0 +1,16 @@
+{% if success or valid%}
+<div class="alert alert-success">
+    <ul class="alert-message">
+            <li>{{ msg }}</li>
+    </ul>
+</div>
+{% endif %}
+{% if error or not valid%}
+
+    <div class="alert alert-danger">
+        <ul class="alert-message">
+                <li>{{ msg }}</li>
+        </ul>
+    </div>
+
+{% endif %}

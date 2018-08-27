@@ -1,0 +1,218 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!-- saved from url=(0037)https://www.booking.voyajoy.com/login -->
+<html >
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content=" width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.booking.voyajoy.com/static/image/favicon.ico">
+    <link rel="canonical" href="http://www.booking.voyajoy.com/">
+
+    <meta property="og:site_name" content="Voyajoy">
+    {% block SEO %}
+    <meta property="og:title" content="{% block seo_title %}Home | Voyajoy {% endblock %} ">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Amazing deals at great vacation homes from tonight to two weeks out. Book now.">
+    <meta property="og:image" content="http://static1.squarespace.com/static/569ab3d3d8af100e8507d8d7/t/569c5a7442f55250d91d4f6d/1453526498103/?format=1000w">
+    <meta itemprop="name" content="">
+    <meta itemprop="url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta itemprop="description" content="Amazing deals at great vacation homes from tonight to two weeks out. Book now.">
+    <meta itemprop="thumbnailUrl" content="http://static1.squarespace.com/static/569ab3d3d8af100e8507d8d7/t/569c5a7442f55250d91d4f6d/1453526498103/?format=1000w">
+    <meta name="twitter:title" content="Home">
+    <meta name="twitter:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="Amazing deals at great vacation homes from tonight to two weeks out. Book now.">
+    <meta name="description" content="Amazing deals at great vacation homes from tonight to two weeks out. Book now.">
+    {% endblock %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+    <title>{% block head_title %}Voyajoy{% endblock %}</title>
+
+    <!-- Fonts -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700%7COpen+Sans%7CMontserrat:500" rel="stylesheet" property="stylesheet" type="text/css" media="all"> -->
+    <link href="{% static 'style/custom-font.css' %}" rel="stylesheet">
+    <!-- Icons -->
+    <link href="{% static 'style/icomoon.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontello/style.css' %}">
+
+    <!-- CSS assets -->
+    <link href="{% static 'style/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'modules/jquery-datepicker/jquery-ui.min.css' %}">
+    <link href="{% static 'modules/Magnific-Popup/magnific-popup.css' %}" rel="stylesheet">
+
+    <!-- LOAD slick slider assets -->
+    <link rel="stylesheet" type="text/css" href="{% static 'modules/slick/slick.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'modules/slick/slick-theme.css' %}"/>
+
+    <!-- LOAD JQUERY LIBRARY-->
+    <script src="{% static 'js/src/plugins/jquery-3.2.1.min.js' %}"></script>
+
+    <!-- REVOLUTION STYLE SHEETS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'modules/revolution/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'modules/revolution/css/settings.css' %}">
+
+
+    <!-- REVOLUTION JS FILES -->
+    <script src="{% static 'modules/revolution/js/jquery.themepunch.tools.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/jquery.themepunch.revolution.min.js' %}"></script>
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.actions.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.carousel.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.kenburn.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.layeranimation.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.migration.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.navigation.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.parallax.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.slideanims.min.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.video.min.js' %}"></script>
+    <script >function setREVStartSize(e){
+        try{ var i=jQuery(window).width(),t=9999,r=0,n=0,l=0,f=0,s=0,h=0;
+            if(e.responsiveLevels&&(jQuery.each(e.responsiveLevels,function(e,f){f>i&&(t=r=f,l=e),i>f&&f>r&&(r=f,n=e)}),t>r&&(l=n)),f=e.gridheight[l]||e.gridheight[0]||e.gridheight,s=e.gridwidth[l]||e.gridwidth[0]||e.gridwidth,h=i/s,h=h>1?1:h,f=Math.round(h*f),"fullscreen"==e.sliderLayout){var u=(e.c.width(),jQuery(window).height());if(void 0!=e.fullScreenOffsetContainer){var c=e.fullScreenOffsetContainer.split(",");if (c) jQuery.each(c,function(e,i){u=jQuery(i).length>0?u-jQuery(i).outerHeight(!0):u}),e.fullScreenOffset.split("%").length>1&&void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0?u-=jQuery(window).height()*parseInt(e.fullScreenOffset,0)/100:void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0&&(u-=parseInt(e.fullScreenOffset,0))}f=u}else void 0!=e.minHeight&&f<e.minHeight&&(f=e.minHeight);e.c.closest(".rev_slider_wrapper").css({height:f})
+        }catch(d){console.log("Failure at Presize of Slider:"+d)}
+    };
+    </script>
+
+
+    <!-- Main theme stylesheet -->
+    <link href="{% static 'style/css/template.css' %}" rel="stylesheet" type="text/css">
+{#    <link rel="stylesheet" href="{% static 'style/braintree.css' %}" type="text/css">#}
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+<div id="page_wrapper">
+
+    {% include 'base/web_nav_bar.html' %}
+
+
+    {% block content %}
+
+
+    {% endblock %}
+
+    {% include 'base/footer.html' %}
+
+</div>
+
+<a href="#" class="totop">TOP</a> <!--/.totop -->
+
+<!-- revolution slider script -->
+<script>
+    var revapi1,
+            tpj=jQuery;
+
+    tpj(document).ready(function() {
+        if(tpj("#rev_slider_1_1").revolution == undefined){
+            revslider_showDoubleJqueryError("#rev_slider_1_1");
+        }else{
+            revapi1 = tpj("#rev_slider_1_1").show().revolution({
+                sliderType:"standard",
+                //jsFileLocation:"//localhost/wpmu/greek/wp-content/plugins/revslider/public/assets/js/",
+                sliderLayout:"fullscreen",
+                dottedOverlay:"none",
+                delay:9000,
+                navigation: {
+                    keyboardNavigation:"off",
+                    keyboard_direction: "horizontal",
+                    mouseScrollNavigation:"off",
+                    mouseScrollReverse:"default",
+                    onHoverStop:"off",
+                    arrows: {
+                        style:"zeus",
+                        enable:true,
+                        hide_onmobile:false,
+                        hide_onleave:false,
+                        tmp:'<div class="tp-title-wrap">  	<div class="tp-arr-imgholder"></div> </div>',
+                        left: {
+                            h_align:"left",
+                            v_align:"center",
+                            h_offset:20,
+                            v_offset:0
+                        },
+                        right: {
+                            h_align:"right",
+                            v_align:"center",
+                            h_offset:20,
+                            v_offset:0
+                        }
+                    }
+                },
+                visibilityLevels:[1240,1024,778,480],
+                gridwidth:1240,
+                gridheight:890,
+                lazyType:"none",
+                scrolleffect: {
+                    fade:"on",
+                    blur:"on",
+                    maxblur:"100",
+                    on_slidebg:"on",
+                    on_parallax_layers:"on",
+                    direction:"top",
+                },
+                parallax: {
+                    type:"scroll",
+                    origo:"enterpoint",
+                    speed:400,
+                    speedbg:0,
+                    speedls:0,
+                    levels:[5,10,15,20,25,30,35,40,45,46,47,48,49,50,51,55],
+                },
+                shadow:0,
+                spinner:"spinner0",
+                stopLoop:"on",
+                stopAfterLoops:0,
+                stopAtSlide:1,
+                shuffle:"off",
+                autoHeight:"off",
+                fullScreenAutoWidth:"off",
+                fullScreenAlignForce:"off",
+                fullScreenOffsetContainer: "",
+                fullScreenOffset: "",
+                disableProgressBar:"on",
+                hideThumbsOnMobile:"off",
+                hideSliderAtLimit:0,
+                hideCaptionAtLimit:0,
+                hideAllCaptionAtLilmit:0,
+                debugMode:false,
+                fallbacks: {
+                    simplifyAll:"off",
+                    nextSlideOnWindowFocus:"off",
+                    disableFocusListener:false,
+                }
+            });
+        }
+
+    });	/*ready*/
+
+</script>
+
+
+
+<script src="{% static 'js/src/plugins/bootstrap.min.js' %}"></script>
+<script src="{% static 'modules/slick/slick.min.js' %}"></script>
+<script src="{% static 'js/src/plugins/jquery-migrate-1.4.1.min.js' %}"></script>
+<script src="{% static 'modules/rellax-master/rellax.min.js' %}"></script>
+<script src="{% static 'modules/Magnific-Popup/jquery.magnific-popup.js' %}"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl3KpSSSXWq3oykddY2l6pHvb0LrTXL9o&callback=initMap" async defer></script> -->
+<script src="{% static 'modules/jquery-datepicker/jquery-ui.min.js' %}"></script>
+<!--Easy paginate script -->
+<script src="{% static 'modules/easyPaginate/jquery.easyPaginate.js' %}"></script>
+<!-- Main template script -->
+<script src="{% static 'js/src/script.js' %}"></script>
+{#<script type="application/javascript" src="{% static 'app_js/storage.js' %}"></script>#}
+<script type="application/javascript" src="{% static 'app_js/jquery.cookie.js' %}"></script>
+<script type="application/javascript" src="{% static 'app_js/jquery.blockUI.js' %}"></script>
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body></html>

@@ -1,0 +1,63 @@
+{% load staticfiles static %}
+<input type="checkbox" name="mobile-nav-toggle" id="mobileNavToggle" class="mobile-nav-toggle-box hidden"/>
+<a href="#" class="body-overlay"></a>
+<div class="sqs-announcement-bar-dropzone"></div>
+<div id="sidecarNav">
+    <div id="mobileNavWrapper" class="nav-wrapper" data-content-field="navigation-mobileNav">
+        <nav id="mobileNavigation">
+
+            {% if g.user %}
+                <div class="collection active homepage">
+                    <a style="display: flex; align-items: center" href="/">
+                        <img style="width: 24px; height: 24px;" src="{% static 'image/ic_home_white_48dp_1x.png' %}"/>
+                        <span style="margin-left: 10px;display: inline">Find Vacation Rentals</span>
+                    </a>
+                </div>
+            {% endif %}
+            <div class="collection active homepage">
+                <a href="tel:4153478038">
+                    {#                    {{ config["VOYAJOY_PHONE_NUMBER"] }}#}
+                </a>
+            </div>
+            <div class="collection active homepage">
+                <a href="/">
+                    Home
+                </a>
+            </div>
+
+            {% if not user.is_authenticated %}
+
+                <div class="external">
+                    <a href="{% url 'account_signup' %}">
+                        Sign Up
+                    </a>
+                </div>
+
+
+                <div class="external">
+                    <a href="{% url 'account_login' %}">
+                        Login
+                    </a>
+                </div>
+
+            {% else %}
+                <div class="external">
+                    <a href="{% url 'account_logout' %}">
+                        Logout
+                    </a>
+                </div>
+
+
+                <a href="/dashboard">Reservations</a>
+
+                <div class="external">
+                    <a href="/dashboard">
+                        {{ user.get_full_name }}
+                    </a>
+                </div>
+            {% endif %}
+        </nav>
+    </div>
+
+
+</div>

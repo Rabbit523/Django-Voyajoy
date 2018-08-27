@@ -1,0 +1,106 @@
+{% extends "base/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}Voyajoy | Sign Up{% endblock %}
+{% block seo_title %}Voyajoy | Sign Up{% endblock %}
+{% block content %}
+
+    <section class="hg-contact"><!-- start services section -->
+        <div class="container">
+            <div class="hg-title-block txt-center">
+                <h3 class="hg-title-block__title">{% trans "Sign Up" %}</h3>
+            </div>
+            <div class="row">
+                <p align="center">{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+                </p>
+
+
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+                <div class="col-md-12 col-sm-12 ">
+
+
+
+                    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.email }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.password1 }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="hg-form-component">
+                                    {{ form.password2 }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="hg-form-component sign-in">
+                                <button class="hb_btn btn-gradient" type="submit">{% trans "Sign Up" %}</button>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+{% block extra_js %}
+    {#    <script type="application/javascript" src="{% static 'app_js/storage.js' %}"></script>#}
+
+    <script>
+        $(function () {
+            $.cookie('confirmed_sent', '1', { path: '/' });
+
+
+        });
+
+    </script>
+
+{% endblock %}

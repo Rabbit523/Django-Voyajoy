@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<div class="hg-promotions-container container">
+    <div class="hg-gpromotions-content">
+        <h3>FEATURED HOMES</h3>
+        <h4>Meet our homeowners for special deals that are available to you.
+        </h4>
+    </div>
+</div>
+<section class="hg-promotions">
+    <div class="container">
+        <ul class="rooms hg-catalog-4-column ">
+            {% for listing in random_listing|slice:"4" %}
+                {% include 'component/random_listing_card.html' %}
+            {% endfor %}
+
+
+        </ul>
+
+        <ul class="rooms hg-catalog-4-column ">
+            {% for listing in random_listing|slice:"4:8" %}
+                {% include 'component/random_listing_card.html' %}
+            {% endfor %}
+
+
+        </ul>
+    </div>
+</section><!-- end promotions section -->

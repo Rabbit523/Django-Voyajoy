@@ -1,0 +1,110 @@
+{% extends 'base/base.html' %}
+{% load staticfiles i18n %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/braintree.css' %}" type="text/css">
+{% endblock %}
+{% block head_title %}Voyajoy | Confirmation{% endblock %}
+{% block seo_title %}Voyajoy | Confirmation{% endblock %}
+{% block content %}
+
+    <div class="page-subheader psub--light">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'index_page' %}">Home</a></li>
+                <li>Reservation Confirmation</li>
+            </ul>
+        </div>
+    </div>
+
+    {% csrf_token %}
+    <div class="container mgt-60">
+    <div class="row">
+    <div id="notification"></div>
+        <!--left side-->
+        <div class="col-sm-12 col-md-12  ">
+            <h3 class="hg-check">Book {{ reservation.listing.headline }}</h3>
+            <table class="hg-booking">
+                <tbody>
+                <tr>
+                    <th>Room </th>
+                    <th class="hg-booking__checkin">Check in</th>
+                    <th class="hg-booking__checkout">Check - out</th>
+                    <th class="hg-booking__night">Adults</th>
+                    <th class="hg-booking__night">Childs</th>
+                </tr>
+                <tr>
+                    <td><a href="{% url 'browse_room' reservation.listing.slug %}">{{ reservation.listing.headline }}</a></td>
+                    <td class="hg-booking__checkin">{{ reservation.arrival_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="hg-booking__checkin">{{ reservation.departure_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="hg-booking__checkin">{{ reservation.no_of_adults }}</td>
+                    <td class="hg-booking__checkin">{{ reservation.no_of_childs }}</td>
+                </tr>
+                <tr class="hg_subtotal">
+                    <td colspan="7">Renter Fee
+                        <span class="hg_subtotal__value">${{ reservation.owner_fees|floatformat:2}}</span>
+                    </td>
+                </tr>
+                {% for fees in reservation.reservation_fees.all %}
+                    <tr class="hg_subtotal">
+                        <td colspan="7">{{ fees.fees_name|title }}
+                            <span class="hg_subtotal__value">${{ fees.fees_amount|floatformat:2 }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr class="hg_grand_total">
+                    <td colspan="7">Discount
+                        <span class="hg_grand_total__value">${{ reservation.total_discount|floatformat:2 }}</span>
+                    </td>
+                </tr>
+
+                <tr class="hg_grand_total">
+                    <td colspan="7">Tax ({{ reservation.tax_rate }} %)
+                        <span class="hg_grand_total__value">${{ reservation.taxes|floatformat:2 }}</span>
+                    </td>
+                </tr>
+                <tr class="hg_adv-pay">
+                    <td colspan="7">Total
+                        <span class="hg_adv-pay__value">${{ reservation.total|floatformat:2 }}</span>
+                    </td>
+                </tr>
+
+
+
+                </tbody>
+            </table>
+
+            <div class="flex-col">
+                <div class="hg-form-component">
+                    <button class="hb_btn btn-success accept" type="button" style="width: 50%" data-target="{{ reservation.id }}"> Accept</button>
+                    <button class="hb_btn btn-danger reject" type="button" style="width: 49%" data-target="{{ reservation.id }}"> Reject</button>
+
+                </div>
+            </div>
+        </div><!--end row  -->
+    </div>
+
+
+
+
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'app_js/booking.js' %}"></script>
+    <script>
+
+        $(document).ready(function () {
+
+
+            var status=$.cookie('confirmed',{path:"/"});
+            if (status == true){
+
+
+                $('#confirmation').removeClass('hide');
+                $.removeCookie('confirmed',{path:"/"});
+            }
+
+        });
+
+
+
+    </script>
+{% endblock %}

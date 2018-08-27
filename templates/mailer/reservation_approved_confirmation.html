@@ -1,0 +1,207 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+
+    <style type="text/css">
+
+        #logo-container {
+            margin-bottom: 3em;
+        }
+
+        .container {
+            margin: 0;
+            padding: 1em;
+            text-align: center;
+            height: auto;
+            max-width: 600px;
+            display: block;
+        }
+
+        #logo {
+            width: 400px;
+            height: auto;
+            text-align: center;
+            margin: 2em 0;
+        }
+
+        p {
+            color: black;
+            font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+            margin: 5px;
+            font-size: 14px;
+            font-weight: 300;
+            padding: 0 0.6em;
+        }
+
+        .spacer {
+            margin: 1.5em 0;
+        }
+
+        .reservation-headline {
+            font-size: 2.5em;
+            margin: 0 0;
+        }
+
+        .listing-headline {
+            font-size: 1.5em;
+            margin: 1em 1em;
+        }
+
+        .dates-container {
+            background-color: #eaeaea;
+            margin: 2em 2em;
+            padding: 1em;
+            text-align: center;
+        }
+
+        .dates-header {
+            font-size: 1.2em;
+        }
+
+        .dates-value {
+            font-size: 1.7em;
+            font-weight: bold;
+        }
+
+        .price-keys {
+            text-align: right;
+            font-size: 1.2em;
+        }
+
+        .price-values {
+            text-align: left;
+            font-size: 1.2em;
+        }
+
+        #total-key,
+        #total-value {
+            font-weight: bold;
+        }
+
+        .payment-container {
+            margin: 2em 0;
+        }
+
+        .payment-info {
+            font-size: 1em;
+        }
+
+        .receipt-details {
+            font-size: 1em;
+        }
+
+        .receipt-details-container {
+            margin: 2em 0;
+        }
+
+        .listing-photo {
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="logo-container">
+        <a href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'index_page' %}">
+            <img id="logo"
+                 src="{{ request.scheme }}://{{ request.META.HTTP_HOST }}/{% static 'images/Logo - white bg.png' %}">
+        </a>
+    </div>
+
+    <div class="reservation-headline-container">
+        <p class="reservation-headline">Good news! {{ reservation.listing.owner_name }} has approved your request to
+            stay</p>
+    </div>
+
+    <div class="listing-headline-container">
+        <p class="listing-headline">Please review your reservation and payment details below:</p>
+    </div>
+
+    <div class="receipt-details-container">
+        <p class="receipt-details">{{ reservation.created_at|date:"SHORT_DATE_FORMAT" }}</p>
+        <p class="receipt-details">Reservation #: {{ reservation.pk }}</p>
+    </div>
+
+    <div class="listing-headline-container">
+        <p class="listing-headline">
+            <a href="{{ request.scheme }}://
+                    {{ request.META.HTTP_HOST }}{% url 'browse_room' reservation.listing.slug %}">{{ reservation.listing.headline }}
+            </a>
+        </p>
+    </div>
+
+    <div class="listing-photo-container">
+        <a href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'browse_room' reservation.listing.slug %}">
+            <img class="listing-photo" src="{{ reservation.listing.listing_photo_listing.all.0.photo.large }}">
+        </a>
+    </div>
+    <div class="dates-container">
+        <table style="margin: 0 auto;">
+            <tr>
+                <td>
+                    <div class="dates-item-container">
+                        <p class="dates-header">Check In</p>
+                        <p class="dates-value">{{ reservation.arrival_date|date:"SHORT_DATE_FORMAT"  }}</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="dates-item-container">
+                        <p class="dates-header">Check Out</p>
+                        <p class="dates-value">{{ reservation.departure_date|date:"SHORT_DATE_FORMAT"  }}</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="pricing-container">
+        <table style="margin: 0 auto; width: 100%">
+            <tr>
+                <td style="text-align: right;">Renter Fees:</td>
+                <td><p class="price-values">${{ reservation.owner_fees|floatformat:2}}</p></td>
+            </tr>
+            {% for fees in reservation.reservation_fees.all %}
+                <tr>
+                    <td style="text-align: right;">{{ fees.fees_name|title }} :</td>
+                    <td><p class="price-values">${{ fees.fees_amount|floatformat:2 }}</p></td>
+                </tr>
+            {% endfor %}
+
+            <tr>
+                <td style="text-align: right;" > Total Discount:</td>
+                <td><p class="price-values">${{ reservation.total_discount|floatformat:2 }}</p></td>
+
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">Tax:</td>
+                <td><p class="price-values">${{ reservation.taxes|floatformat:2 }}</p></td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">Total:</td>
+                <td><p id="total-value" class="price-values">
+                    ${{ reservation.total|floatformat:2 }}</p></td>
+            </tr>
+
+        </table>
+    </div>
+
+    {#    <div class="payment-container">#}
+    {#        <p class="payment-info">We have charged ${{ reservation.total }} to your credit card ending with xxxx</p>#}
+    {#    </div>#}
+
+
+    <p style="margin-top:20px;text-align:center;">
+        If you have any questions or problems, please contact us: <a href="mailto:support@voyajoy.com"
+                                                                     style="text-decoration:none;color:#blue"
+                                                                     target="_blank">support@voyajoy.com</a>
+    </p>
+    <p style="text-align:center;color:#bcb5b9;font-weight:300;margin:30px auto">
+        Voyajoy Team
+    </p>
+</div>
+</body>
+</html>

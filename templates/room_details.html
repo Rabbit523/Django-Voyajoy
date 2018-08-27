@@ -1,0 +1,397 @@
+{% extends 'base/base.html' %}
+{% load staticfiles i18n widget_tweaks %}
+{% block head_title %}Voyajoy | {{ listing.headline |title|safe }}{% endblock %}
+
+{% block extra_css %}
+
+    <link rel="stylesheet" href="{% static 'style/star-rating.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'modules/revolution/css/modaal.css' %}">   
+
+{% endblock %}
+
+{% block SEO%}
+    <meta property="og:title" content="Voyajoy | {{ listing.headline |title|safe }}">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="{{ listing.overview_text }}">
+    <meta property="og:image" content="{{ listing.listing_photo_listing.all.0.photo.large }}">
+    <meta itemprop="name" content="">
+    <meta itemprop="url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta itemprop="description" content="{{ listing.overview_text }}">
+    <meta itemprop="thumbnailUrl" content="{{ listing.listing_photo_listing.all.0.photo.large }}">
+    <meta name="twitter:title" content="Voyajoy | {{ listing.headline |title|safe }}">
+    <meta name="twitter:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="{{ listing.overview_text }}">
+    <meta name="description" content="{{ listing.overview_text }}">
+
+{% endblock %}
+{% block seo_title %}Voyajoy | {{ listing.headline |title|safe }}{% endblock %}
+
+{% block content %}
+
+    <!-- Room Title -->
+    <div class="page-subheader psub--light">
+        <div class="page-subheader-container">
+            <div class="title">
+                <h4>{{ listing.headline |title|safe }}</h4>
+            </div>
+            <div class="price">
+
+                <span class="price-value">
+                {% if listing.discounted_rate > 0 %}
+                    ${{ listing.get_price_after_discount|floatformat:2 }}
+                {% else %}
+                    ${{ listing.accomodation_fee|floatformat:2 }}
+                {% endif %}
+                    </span>
+                <span class="price-unit">/ Night</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="bg-color--grey">
+        {% include 'component/room_pic.html' %}
+
+        <!--content  -->
+        <div class="container mgt-60">
+            <div class="row">
+                <!--left side-->
+                <div class="col-sm-8 col-md-9">
+                    <div class="hg-room-details">
+                        <ul class="hg-tabs hg-tabs--room">
+                            <li>
+                                <a class="tablinks active" href="#room-description">Description</a>
+                            </li>
+
+                            <li>
+                                <a class="tablinks" href="#room-additional">REVIEWS ({{ listing.review_count }})</a>
+                            </li>
+                        </ul>
+                        <div class="hg-tabs-content">
+                            <div id="room-description" class="tabcontent">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>About This Listing</strong>
+                                                <br>
+                                                <p>{{ listing.overview_text|safe }}</p>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <!--second row-->
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>The Space</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row">
+
+                                                    <div class="col-sm-6">
+
+                                                        Property type: <Span><strong>{{ listing.housing_type }}</strong></span>
+                                                        <br>
+                                                        Bedrooms:
+                                                        <Span><strong>{{ listing.bedrooms|default_if_none:0 }}</strong></span>
+                                                        <br>
+                                                        Bathroom: <Span><strong>{{ listing.bathrooms }}</strong></span>
+                                                        <br>
+                                                        Room For: <Span><strong
+                                                            class="max-guest">{{ listing.max_guests }}</strong></span>
+                                                        <br>
+                                                        Minimum Stay:
+                                                        <Span><strong
+                                                                class="min-nights">{{ listing.min_nights }}</strong></span>
+                                                        <br>
+                                                    </div>
+                                                </div>
+
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        {% if listing.place_txt %}
+                                            <!--third row-->
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <strong>The Place</strong>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    {{ listing.place_txt|safe }}
+
+                                                    <hr>
+                                                </div>
+
+                                                <!--4th row-->
+                                            </div>
+                                        {% endif %}
+                                    {% if listing.get_amentities %}
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <strong>AMENITIES</strong>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        {% for amenities in listing.get_amentities %}
+                                                            <span class="hg-tabs-content--icon icon-checkmark"></span>
+                                                            {{ amenities|safe }}
+                                                            </br>
+                                                        {% endfor %}
+
+
+                                                    </div>
+
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                        {% if listing.neighborhood_text and listing.neighborhood_text|length > 0 %}
+                                            <!--Cancellation row-->
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <strong>THE NEIGHBORHOOD
+                                                    </strong>
+                                                </div>
+                                                <div class="col-sm-9">
+
+                                                    {{ listing.neighborhood_text }}
+                                                    <hr>
+                                                </div>
+                                            </div>
+
+                                        {% endif %}
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="room-additional" class="tabcontent">
+
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="review-block">
+
+                                            {% for reviews in listing.listing_reviews_list.all %}
+                                                {% with reviews.review as review %}
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            {% if review.reviewer_avatar %}
+                                                                <img src="{{ review.reviewer_avatar }}"
+                                                                     class="img-rounded" style="width: 50%">
+                                                            {% else %}
+                                                                <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image"
+                                                                     class="img-rounded">
+                                                            {% endif %}
+                                                            <div class="review-block-name"><a
+                                                                    href="#">{{ review.reviewer_name }} </a></div>
+                                                            <div class="review-block-date">{{ review.date_stayed|default_if_none:'' }} <br/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input class="rating" data-readonly data-max="5" data-min="1" value="{{ review.rating }}" data-clearable="remove" data-clearable-remain="true" id="some_id" name="your_awesome_parameter" type="number" />
+
+
+                                                            <div class="review-block-title">
+                                                                {% if review.title %}{{ review.title }}{% endif %}</div>
+
+                                                            <div class="review-block-description">{{ review.body }}</div>
+                                                        </div>
+                                                    </div>
+                                                    <hr/>
+                                                {% endwith %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <!--Right side-->
+                <aside class="col-sm-4 col-md-3 ">
+                    <div class="sidebar sidebar--room">
+
+                        <div class="alert alert-danger hide custom-error">
+                            <ul class="alert-message">
+                                <li></li>
+                            </ul>
+                        </div>
+
+                        <!--start search form-->
+                        <h2>SEARCH YOUR ROOM</h2>
+                        <form method="get" action="{% url 'checkout' %}" onsubmit="return validateBookingForm(this);">
+                            {% csrf_token %}
+                            <div class="flex-column">
+                                <!--Column adults  -->
+                                <div class="flex-col">
+                                    <!--date picker arrival-->
+                                    <div class="hg-form-component-input form-group">
+                                        <label for="reservation-startdate">Arrival date</label>
+                                        <div class='input-group date'>
+                                            {% render_field form.arrival_date placeholder=form.arrival_date.label class="form-control js-datepicker" required="required" autocomplete="OFF"%}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!---date pickerdeparture  -->
+                                <div class="flex-col">
+                                    <div class="hg-form-component-input form-group">
+                                        <label for="reservation-enddate">Departure date</label>
+                                        <div class='input-group date'>
+                                            {% render_field form.departure_date placeholder=form.departure_date.label class="form-control js-datepicker" required="required" disabled="disabled" autocomplete="OFF"%}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Column adults  -->
+                                <div class="flex-col">
+                                    <div class="hg-form-component-input">
+                                        <label for="no_of_guest">Adults</label>
+                                        <select id="no_of_guest" name="no_of_guest" required="required">
+                                            <optgroup label="Adults">
+                                                <option value="0">Adults</option>
+                                                {% for guest in listing.get_max_guests %}
+                                                    <option value="{{ guest }}" >{{ guest }}</option>
+
+                                                {% endfor %}
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex-col">
+                                    <div class="hg-form-component-input">
+                                        <label for="no_of_guest_child">Children</label>
+                                        <select id="no_of_guest_child" name="no_of_guest_child">
+                                            <optgroup label="Adults">
+                                                <option value="0">Children</option>
+                                                <option value="0">0</option>
+                                                {% for guest in listing.get_max_guests %}
+                                                    <option value="{{ guest }}">{{ guest }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="listing_id" value="{{ listing.pk }}">
+                                <input type="hidden" name="total" id="total">
+
+                                <!--Column submit -->
+                                <div class="flex-col">
+                                    <div class="hg-form-component">
+                                        <button class="hb_btn btn-gradient " type="submit"> Book</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        {% include 'cart/preview_cart.html' %}
+
+                    </div><!--end sidebar-->
+                </aside>
+
+            </div><!--end row  -->
+        </div><!--end container  -->
+    </section>
+
+
+{% endblock %}
+
+{% block extra_js %}
+    <script type="application/javascript" src="{% static 'app_js/bootstrap-rating-input.js' %}"></script>
+    <script type="application/javascript" src="{% static 'app_js/storage.js' %}"></script>
+    <script src="{% static 'modules/revolution/js/extensions/revolution.extension.modaal.min.js' %}"></script>
+
+    <script type="application/javascript">
+
+
+        var disableddates = {{ unavailable_dates|safe }};
+
+        function getDate(element) {
+            var date;
+            try {
+                date = $.datepicker.parseDate('mm/dd/yy', element.value);
+            } catch (error) {
+                console.log(error);
+                date = null;
+            }
+
+            return date;
+        }
+
+
+        function addDays(startDate, numberOfDays) {
+            var returnDate = new Date(
+                    startDate.getFullYear(),
+                    startDate.getMonth(),
+                    startDate.getDate() + numberOfDays,
+                    startDate.getHours(),
+                    startDate.getMinutes(),
+                    startDate.getSeconds());
+            return returnDate;
+        }
+
+        $(function () {
+
+            var dateFormat = "YYYY-MM-DD",
+                    from = $("#id_arrival_date")
+                            .datepicker({
+                                defaultDate: "+1w",
+                                changeMonth: false,
+                                numberOfMonths: 2,
+                                minDate: new Date(),
+                                todayHighlight: true,
+                                beforeShowDay: function (date) {
+
+                                    var string = jQuery.datepicker.formatDate('dd-mm-y', date);
+                                    return [disableddates.indexOf(string) == -1];
+                                }
+                            })
+                            .on("change", function (selection) {
+                                var next = addDays(getDate(this), parseInt($('.min-nights').text()));
+                                to.datepicker("option", "minDate", addDays(getDate(this), parseInt($('.min-nights').text())));
+                                $('#id_departure_date').removeAttr('disabled');
+                            }),
+                    to = $("#id_departure_date").datepicker({
+                        defaultDate: "+1w",
+                        changeMonth: false,
+                        numberOfMonths: 2,
+                        beforeShowDay: function (date) {
+
+                            var string = jQuery.datepicker.formatDate('dd-mm-y', date);
+                            return [disableddates.indexOf(string) == -1];
+                        }
+                    }).on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    });
+
+            /// add to storage
+{#            saveNextURL({{ request.path }});#}
+
+            {% if not user.is_authenticated %}
+                saveStorage('next','{{ request.path }}');
+
+                {% else %}
+
+                removeStorage('next');
+            {% endif %}
+
+
+        });
+        $('.cont-img').modaal({
+            type: 'image'
+        });
+    </script>
+
+    <script src="{% static 'app_js/booking.js' %}"></script>
+
+{% endblock %}

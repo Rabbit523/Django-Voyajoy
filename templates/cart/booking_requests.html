@@ -1,0 +1,104 @@
+{% extends 'base/base.html' %}
+{% load staticfiles i18n %}
+{% block extra_css %}
+    <link>
+    <link href="{% static 'style/semantic.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/dataTables.semanticui.min.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block head_title %}Voyajoy | Booking History{% endblock %}
+{% block seo_title %}Voyajoy | Booking History{% endblock %}
+{% block content %}
+
+    <!-- Room Title -->
+    <div class="page-subheader psub--light">
+        <div class="page-subheader-container">
+            <div class="title">
+                <h4>Cart checkout</h4>
+            </div>
+
+        </div>
+    </div>
+
+    <section class="bg-color--grey">
+        <!--slider section  -->
+        <div class="hg-room-container">
+            <div class="room-containter-image">
+                <div class="hg-room-gallery">
+                    <div class="cont-img"><img src="{% static 'images/slider_14.jpg' %}" alt="room-image"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+	<section class="bg-color--grey">
+		<div class="row">
+			{% include 'base/notifications.html' %}
+			<!--left side-->
+			<div class="col-sm-8 col-md-12 ">
+				<table class=" ui celled table" id="trxtbl" cellspacing="0" width="100%">
+					<thead>
+
+					<tr>
+						<th>Ref#</th>
+						<th>Room </th>
+						<th class="hg-booking__checkin">Check - in</th>
+						<th class="hg-booking__checkout">Check - out</th>
+						<th class="hg-booking__checkout">Adults</th>
+						<th class="hg-booking__checkout">Childs</th>
+						<th class="hg-booking__checkout">Total</th>
+
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td id="ref_num"></td>
+							<td>{{ listing.headline }}</td>
+							<td>{{ arrival_date }}</td>
+							<td>{{ departure_date }}</td>
+							<td>{{ no_of_adult }}</td>
+							<td>{{ no_of_child }}</td>
+
+							<td>{{ total|floatformat:2 }}$</td>
+
+
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td>
+								<form method="get" action="{% url 'checkout' %}">
+									{% csrf_token %}
+									<input type="hidden" name="listing_id" value="{{ listing.id }}">
+									<input type="hidden" name="arrival_date" value="{{ arrival_date }}">
+									<input type="hidden" name="departure_date" value="{{ departure_date }}">
+									<input type="hidden" name="no_of_guest" value="{{ no_of_adult }}">
+									<input type="hidden" name="no_of_guest_child" value="{{ no_of_child }}">
+									<button class="hb_btn btn-gradient "  type="submit"> Continue Checkout</button>
+								</form>
+
+							</td>
+						</tr>
+
+
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+	</section>
+{% endblock %}
+
+{% block extra_js %}
+
+    <script src="{% static 'js/jquery-1.12.4.js'%}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.semanticui.min.js' %}"></script>
+    <script src="{% static 'js/semantic.min.js' %}"></script>
+<script>
+
+{#    $(document).ready(function() {#}
+{#        $('#trxtbl').DataTable();#}
+{#    } );#}
+</script>
+
+{% endblock %}

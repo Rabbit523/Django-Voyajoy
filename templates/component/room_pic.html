@@ -1,0 +1,17 @@
+<!--slider section  -->
+<div class="hg-room-container">
+    <div class="room-containter-image">
+        <div class="hg-room-gallery">
+            {% for image_large in listing.listing_photo_listing.all %}
+            <a href="{{ image_large.photo.large }}" rel="cont-img" class="cont-img"><img src="{{ image_large.photo.large }}" alt="room-image"></a>
+          {% endfor %}
+        </div>
+    </div>
+    <ul class="slider-nav container">
+        {% for image_large in listing.listing_photo_listing.all %}
+            <li><img src="{{ image_large.photo.thumb }}" alt="room-image"></li>
+       {% endfor %}
+
+
+    </ul>
+</div>
